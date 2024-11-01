@@ -175,7 +175,7 @@ public class PlayerConfig {
         //J,K,L
         list.add(EntityType.LLAMA);
         //M
-        list.add(EntityType.MUSHROOM_COW);
+        //list.add(EntityType.MUSHROOM_COW);
         list.add(EntityType.MAGMA_CUBE);
         list.add(EntityType.MULE);
         //N,O
@@ -200,7 +200,7 @@ public class PlayerConfig {
         list.add(EntityType.SALMON);
         list.add(EntityType.SHEEP);
         list.add(EntityType.SILVERFISH);
-        list.add(EntityType.SNOWMAN);
+        //list.add(EntityType.SNOWMAN);
         list.add(EntityType.SQUID);
         list.add(EntityType.STRAY);
         list.add(EntityType.STRIDER);

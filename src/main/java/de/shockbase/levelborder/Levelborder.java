@@ -6,6 +6,8 @@ import de.shockbase.levelborder.commands.LevelBorderCommands;
 import de.shockbase.levelborder.config.PlayerConfig;
 import de.shockbase.levelborder.timer.Timer;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -158,8 +160,8 @@ public final class Levelborder extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onPlayerPortalEvent(PlayerPortalEvent event) {
-        Player player = event.getPlayer();
-        Location fromWorld = event.getFrom();
+        //Player player = event.getPlayer();
+        //Location fromWorld = event.getFrom();
         Location toWorld = event.getTo();
 
         if (toWorld.getWorld().getName().endsWith("_nether")) {
@@ -172,7 +174,7 @@ public final class Levelborder extends JavaPlugin implements Listener {
             PlayerConfig.save();
         }
 
-        Bukkit.getLogger().info(player.getName() + " enters " + toWorld.getWorld().getName() + " at " + toWorld + " from " + fromWorld.getWorld().getName());
+        //Bukkit.getLogger().info(player.getName() + " enters " + toWorld.getWorld().getName() + " at " + toWorld + " from " + fromWorld.getWorld().getName());
     }
 
     private void setWorldBorder(Player player, @Nullable Location playerBorderCenter) {
@@ -207,13 +209,13 @@ public final class Levelborder extends JavaPlugin implements Listener {
         } else {
             if (player.hasPlayedBefore()) {
                 title = Title.title(
-                        Component.text(ChatColor.GOLD + "Welcome back, " + "" + ChatColor.BOLD + player.getName() + "!"),
-                        Component.text(ChatColor.AQUA + "Your world will expand according to your exp level." + ChatColor.BOLD + " Good luck!")
+                        Component.text("Welcome back, ").color(TextColor.color(0xFFD700)).append(Component.text(player.getName()).decorate(TextDecoration.BOLD)).append(Component.text("!")),
+                        Component.text("Your world will expand according to your exp level.").color(TextColor.color(0x55FFFF)).append(Component.text(" Good luck!").decorate(TextDecoration.BOLD))
                 );
             } else {
                 title = Title.title(
-                        Component.text(ChatColor.GOLD + "Welcome, " + "" + ChatColor.BOLD + player.getName() + "!"),
-                        Component.text(ChatColor.AQUA + "Your world will expand according to your exp level." + ChatColor.BOLD + " Good luck!")
+                        Component.text("Welcome, ").color(TextColor.color(0xFFD700)).append(Component.text(player.getName()).decorate(TextDecoration.BOLD)).append(Component.text("!")),
+                        Component.text("Your world will expand according to your exp level.").color(TextColor.color(0x55FFFF)).append(Component.text(" Good luck!").decorate(TextDecoration.BOLD))
                 );
             }
             player.showTitle(title);
@@ -223,11 +225,11 @@ public final class Levelborder extends JavaPlugin implements Listener {
     private void showRestartInfo(Player player) {
         Title title;
         title = Title.title(
-                Component.text(ChatColor.GOLD + "Welcome back, " + "" + ChatColor.BOLD + player.getName() + "!"),
-                Component.text(ChatColor.RED + "You are in SPECTATOR mode. Enjoy the show!")
+                Component.text("Welcome back, ").color(TextColor.color(0xFFD700)).append(Component.text(player.getName()).decorate(TextDecoration.BOLD)).append(Component.text("!")),
+                Component.text("You are in SPECTATOR mode. Enjoy the show!").color(TextColor.color(0xFF0000))
         );
         player.showTitle(title);
-        player.sendMessage(Component.text(ChatColor.RED + "Type " + ChatColor.RESET + "" + ChatColor.ITALIC + "" + ChatColor.BOLD + "/lb reset" + ChatColor.RESET + "" + ChatColor.RED + " to try again."));
+        player.sendMessage(Component.text("Type ").color(TextColor.color(0xFF0000)).append(Component.text("/lb reset").decorate(TextDecoration.ITALIC).decorate(TextDecoration.BOLD)).append(Component.text(" to try again.").color(TextColor.color(0xFF0000))));
     }
 
     private boolean generateSpawnTree(Player player) {
@@ -237,7 +239,10 @@ public final class Levelborder extends JavaPlugin implements Listener {
         boolean spawnTreeGrown = player.getWorld().generateTree(blockUnderPlayer.getLocation().add(0, 1, 0), TreeType.TREE);
         Location playerLocation = blockUnderPlayer.getLocation().toHighestLocation().add(0.5, 1, 0.5);
         player.teleport(playerLocation);
-        player.setBedSpawnLocation(playerLocation, true);
+
+        // Replace deprecated setBedSpawnLocation with setRespawnLocation
+        player.setRespawnLocation(playerLocation, true);
+
         return spawnTreeGrown;
     }
 }
