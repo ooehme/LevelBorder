@@ -9,33 +9,50 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class LevelBorderCommands implements TabExecutor {
+    private static final String RESET_COMMAND = "reset";
+    private static final String RESET_MESSAGE = "Reset done. Please reconnect.";
+
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-            if (args[0].equalsIgnoreCase("reset")) {
-                player.kick(Component.text("Reset done. Please reconnect."));
-                PlayerConfig.reset(player);
-                return true;
-            }
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
+                             @NotNull String label, @NotNull String[] args) {
+        if (!(sender instanceof Player)) {
+            return false;
         }
 
-        return false;
+        if (args.length < 1) {
+            return false;
+        }
+
+        return handlePlayerCommand((Player) sender, args[0]);
+    }
+
+    private boolean handlePlayerCommand(Player player, String command) {
+        if (!command.equalsIgnoreCase(RESET_COMMAND)) {
+            return false;
+        }
+
+        resetPlayer(player);
+        return true;
+    }
+
+    private void resetPlayer(Player player) {
+        player.kick(Component.text(RESET_MESSAGE));
+        PlayerConfig.reset(player);
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender,
+                                                @NotNull Command command,
+                                                @NotNull String alias,
+                                                @NotNull String[] args) {
         if (args.length == 1) {
-            List<String> commands = new ArrayList<>();
-            commands.add("reset");
-            return commands;
+            return Collections.singletonList(RESET_COMMAND);
         }
 
-        return null;
+        return Collections.emptyList();
     }
 }

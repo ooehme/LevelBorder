@@ -9,7 +9,6 @@ World size depends on player level. You will start with a 5x5 world border and a
 
 ## dependencies:
 - https://github.com/yannicklamprecht/WorldBorderAPI
-- https://github.com/PlayPro/CoreProtect
 
 ## recommended server:
 - https://papermc.io/
